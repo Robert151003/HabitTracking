@@ -73,3 +73,16 @@ export const resetData = async () => {
         console.log(e);
     }
 };
+
+// utils/localStorage.ts
+export const getCompletedHabitsByDate = async (): Promise<{ [key: string]: number }> => {
+  // Example: return object where keys are date strings and values are 0-1
+  return {
+    '2025-08-29': 0.75,
+    '2025-08-30': 1,
+    '2025-08-31': 0.4,
+    '2025-09-01': 0.5,
+    '2025-09-02': 1,
+    '2025-09-03': 0.8,
+  };
+};

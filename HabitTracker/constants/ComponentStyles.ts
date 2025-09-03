@@ -53,6 +53,11 @@ export const ComponentStyles = StyleSheet.create({
   buttonWrapper: {
     flex: 1,
     marginHorizontal: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   centeredText: {
     textAlign: 'center',
@@ -91,15 +96,72 @@ export const ComponentStyles = StyleSheet.create({
     fontWeight: 'bold',
   },
   resetButton: {
-    backgroundColor: '#dc3545', // Red color for reset
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 20,
+    backgroundColor: '#FF3B30',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 12,
   },
   resetButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  calendarContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 25,
+    marginHorizontal: 30,
+    marginTop: 15,
+    marginBottom: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    width: '85%',
+  },
+  fullScreenContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+
+  // Quote styling
+  quoteContainer: {
+    margin: 16,
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: '#FFF3E0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quoteText: {
+    fontSize: 16,
+    fontStyle: 'italic',
+    color: '#FF8C00',
+    textAlign: 'center',
+  },
+
+  // Profile-specific styling
+  profileSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  motivationalText: {
+    fontSize: 16,
+    color: '#FF8C00',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+    width: '100%',
+  },
+  actionsContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+    width: '100%',
   },
 });

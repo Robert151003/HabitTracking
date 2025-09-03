@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { View, TextInput, Button, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { ComponentStyles } from '../../constants/ComponentStyles';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -26,12 +26,12 @@ export default function EditUserName({ userName, inputName, setInputName, handle
             onChangeText={setInputName}
           />
           <View style={ComponentStyles.buttonRow}>
-            <View style={ComponentStyles.buttonWrapper}>
-              <Button title="Save Name" onPress={handleSaveName} />
-            </View>
-            <View style={ComponentStyles.buttonWrapper}>
-              <Button title="Cancel" onPress={() => setIsEditingName(false)} color="gray" />
-            </View>
+            <TouchableOpacity style={[ComponentStyles.buttonWrapper, { backgroundColor: '#32CD32' }]} onPress={handleSaveName}>
+              <Text>Save Name</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[ComponentStyles.buttonWrapper, { backgroundColor: '#A9A9A9' }]} onPress={() => setIsEditingName(false)}>
+              <Text>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </View>
       ) : (

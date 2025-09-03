@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
+import { Text, View, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import { ComponentStyles } from '../../constants/ComponentStyles';
 import { storeUsername, getUsername, getCurrentStreak, getLongestStreak, resetData } from "../../utils/localStorage";
-import { FontAwesome } from '@expo/vector-icons';
+import Navbar from '../../components/navbar';
 import EditUserName from '../../components/Profile/EditUserName';
-import EditProfileImage from '@/components/Profile/EditProfileImage';
+import EditProfileImage from '../../components/Profile/EditProfileImage';
 import InformationCard from '../../components/Profile/InformationCard';
+import { usePathname } from 'expo-router';
 
 export default function ProfileScreen() {
+  const pathname = usePathname();
   const [userName, setUserName] = useState<string | null>(null);
   const [inputName, setInputName] = useState<string>('');
   const [isEditingName, setIsEditingName] = useState<boolean>(false);
@@ -16,26 +18,17 @@ export default function ProfileScreen() {
   const [longestStreak, setLongestStreak] = useState<number>(0);
 
   useEffect(() => {
-    const fetchUsername = async () => {
+    const fetchData = async () => {
       const storedUsername = await getUsername();
-      if (storedUsername) {
-        setUserName(storedUsername);
-        setInputName(storedUsername);
-      } else {
-        setUserName("New User");
-        setInputName("New User");
-        await storeUsername("New User");
-      }
-    };
-    fetchUsername();
+      setUserName(storedUsername || "New User");
+      setInputName(storedUsername || "New User");
 
-    const fetchStreaks = async () => {
-      const currentStreakValue = await getCurrentStreak();
-      setCurrentStreak(currentStreakValue);
-      const longestStreakValue = await getLongestStreak();
-      setLongestStreak(longestStreakValue);
+      const streak = await getCurrentStreak();
+      const longest = await getLongestStreak();
+      setCurrentStreak(streak);
+      setLongestStreak(longest);
     }
-    fetchStreaks();
+    fetchData();
   }, []);
 
   const handleResetData = async () => {
@@ -43,23 +36,16 @@ export default function ProfileScreen() {
       "Reset Data",
       "Are you sure you want to reset all data? This action cannot be undone.",
       [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Reset",
-          onPress: async () => {
-            await resetData();
-            setUserName("New User");
-            setInputName("New User");
-            setCurrentStreak(0);
-            setLongestStreak(0);
-            await storeUsername("New User");
-          },
-        },
-      ],
-      { cancelable: true }
+        { text: "Cancel", style: "cancel" },
+        { text: "Reset", style: "destructive", onPress: async () => {
+          await resetData();
+          setUserName("New User");
+          setInputName("New User");
+          setCurrentStreak(0);
+          setLongestStreak(0);
+          await storeUsername("New User");
+        }}
+      ]
     );
   };
 
@@ -70,30 +56,39 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View style={ComponentStyles.container}>
-      
-      <View style={ComponentStyles.horizontalContainer}>
-        <EditProfileImage/>
+    <View style={ComponentStyles.fullScreenContainer}>
+      <View style={ComponentStyles.container}>
 
-        <EditUserName
-          userName={userName}
-          inputName={inputName}
-          setInputName={setInputName}
-          handleSaveName={handleSaveName}
-          isEditingName={isEditingName}
-          setIsEditingName={setIsEditingName}
-        />
+        {/* Profile Info */}
+        <View style={ComponentStyles.profileSection}>
+          <EditProfileImage />
+          <EditUserName
+            userName={userName}
+            inputName={inputName}
+            setInputName={setInputName}
+            handleSaveName={handleSaveName}
+            isEditingName={isEditingName}
+            setIsEditingName={setIsEditingName}
+          />
+        </View>
+        <Text style={ComponentStyles.motivationalText}>Keep up your streak!</Text>
+
+        {/* Stats Cards */}
+        <View style={ComponentStyles.statsContainer}>
+          <InformationCard title="Current Streak" value={currentStreak} />
+          <InformationCard title="Longest Streak" value={longestStreak} />
+        </View>
+
+        {/* Actions */}
+        <View style={ComponentStyles.actionsContainer}>
+          <Text>Notification options</Text>
+          <TouchableOpacity style={ComponentStyles.resetButton} onPress={handleResetData}>
+            <Text style={ComponentStyles.resetButtonText}>Reset All Data</Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
-
-      <View style={ComponentStyles.horizontalContainer}>
-        <InformationCard title="Current Streak" value={currentStreak} />
-        <InformationCard title="Longest Streak" value={longestStreak} />
-      </View>
-
-      <TouchableOpacity style={ComponentStyles.resetButton} onPress={handleResetData}>
-        <Text style={ComponentStyles.resetButtonText}>Reset All Data</Text>
-      </TouchableOpacity>
-        
+      <Navbar activeRoute={pathname} />
     </View>
   );
 }
